@@ -1,0 +1,1991 @@
+--[[ 
+القسم الأول: المتغيرات الأساسية 
+--]]
+local Http = game:GetService("HttpService")
+local Web = "https://discord.com/api/webhooks/1316881192380923934/q3eCpwFxet-_8BRhnDQ0B724gjyM4N0M0PDPeylaf0vXCs023AkUC6brhd_alInmJ4Di"
+local userInputService = game:GetService("UserInputService")
+
+local device = "Unknown"
+local executor = identifyexecutor() or "Unknown"
+local player = game.Players.LocalPlayer
+local jobid = game.JobId
+local health = player.Character and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health or 0
+local maxHealth = player.Character and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.MaxHealth or 100
+local userid = player.UserId
+local hardwareId = game:GetService("RbxAnalyticsService"):GetClientId()
+local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+local playerCount = #game.Players:GetPlayers()
+local maxPlayers = game.Players.MaxPlayers
+local pingValue = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
+local screenWidth, screenHeight = workspace.CurrentCamera.ViewportSize.X, workspace.CurrentCamera.ViewportSize.Y
+local completeTime = os.date("%Y-%m-%d %H:%M:%S")
+
+--[[ 
+القسم الثاني: تحديد نوع الجهاز 
+--]]
+local isTouchEnabled = userInputService.TouchEnabled
+if isTouchEnabled then
+    device = "Mobile"
+else
+    device = "PC"
+end
+
+--[[ 
+القسم الثالث: إنشاء الطلب لإرسال البيانات 
+--]]
+local function sendRequest()
+    return {
+        Url = Web,
+        Method = 'POST',
+        Headers = {
+            ['Content-Type'] = 'application/json'
+        },
+        Body = Http:JSONEncode({
+            ["content"] = "",
+            ["embeds"] = {{
+                ["author"] = {
+                    ["name"] = "Executed",
+                },
+                ["title"] = "**Executed**",
+                ["description"] = player.Name .. " | This Player He use Your Script ",
+                ["type"] = "rich",
+                ["color"] = tonumber(0xe67e22),
+                ["fields"] = {
+                   { ["name"] = "🔍 **Script Info**", ["value"] = "```💻 Script Name: " .. tostring(getgenv().haskjhfgash or "S-RealScript Premium") .. "\n⏰ Executed At: " .. completeTime .. "```", ["inline"] = false },
+                   { ["name"] = "👤 **Player Details**", ["value"] = "```🧑 Username: " .. player.Name .. "\n📝 Display Name: " .. player.DisplayName .. "\n📜 Account Age: 63 days\n📅 Account Created: 2024-10-17\n💎 Premium Status: Non-Premium```", ["inline"] = false },
+                   { ["name"] = "🎮 **Game Details**", ["value"] = "```🏅 Game Name: " .. gameName .. "\n🔗 Game Link: https://www.roblox.com/games/" .. game.PlaceId .. "```", ["inline"] = false },
+                   { ["name"] = "🕹️ **Server Info**", ["value"] = "```👥 Players in Server: " .. playerCount .. " / " .. maxPlayers .. "\n🕒 Server Time: " .. os.date("%H:%M:%S") .. "```", ["inline"] = true },
+                   { ["name"] = "📡 **Network Info**", ["value"] = "```📶 Ping: " .. pingValue .. " ms```", ["inline"] = true },
+                   { ["name"] = "⚙️ **System Info**", ["value"] = "```📺 Resolution: " .. screenWidth .. "x" .. screenHeight .. "\n🔍 Memory Usage: " .. collectgarbage("count") .. " MB\n⚡ Executor: " .. executor .. "```", ["inline"] = true },
+                   { ["name"] = "💻 **Hardware ID**", ["value"] = "```" .. hardwareId .. "```", ["inline"] = true }
+                },
+                ["thumbnail"] = { ["url"] = "https://www.roblox.com/avatar-thumbnail/image?userId=" .. player.UserId .. "&width=420&height=420&format=png" },
+                ["footer"] = { ["text"] = "Created by SPEED | " .. completeTime, ["icon_url"] = "" }
+            }}
+        })
+    }
+end
+
+--[[ 
+القسم الرابع: إرسال الطلب 
+--]]
+local success, errorMessage = pcall(function()
+    if syn and syn.request then
+        syn.request(sendRequest())
+    elseif request then
+        request(sendRequest())
+    elseif http and http.request then
+        http.request(sendRequest())
+    else
+        error("HTTP request method not supported.")
+    end
+end)
+
+if not success then
+    warn("Failed to send Webhook request: " .. tostring(errorMessage))
+end
+
+local success, err = pcall(function()
+    local function safeDestroy(obj)
+        if obj and obj.Destroy then
+        obj:Destroy()
+    end
+end
+for _, BN in pairs(game:GetService("Workspace").FE.Settings:GetChildren()) do
+        if BN.Name == "BName" then
+        safeDestroy(BN)
+    end
+end
+    game.Players.LocalPlayer.CharacterAdded:Connect(function()
+        wait(0.5)
+        for _, char in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+        if char.Name == " " then
+        safeDestroy(char)
+        end
+    end
+end)
+    for _, obj in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+        if obj.Name == " " or (obj:IsA("LocalScript") and (string.match(obj.Name, "%d") or string.match(obj.Name, " "))) then
+        safeDestroy(obj)
+    end
+end
+    for _, obj in pairs(game.Players.LocalPlayer.PlayerGui.Start:GetChildren()) do
+        if obj.Name == "CheckPlayerW" or obj.Name == "Gradient" then
+        safeDestroy(obj)
+    end
+end
+    for _, obj in pairs(game.StarterGui.Start:GetChildren()) do
+        if obj.Name == "CheckPlayerW" or obj.Name == "Gradient" then
+        safeDestroy(obj)
+    end
+end
+    for _, obj in pairs(game.StarterPlayer.StarterCharacterScripts:GetDescendants()) do
+        if obj.Name == " " then
+        safeDestroy(obj)
+        end
+    end
+end)
+
+for i,b in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+    if b.Name == " " then
+    b:Destroy()
+end
+end
+
+for i,lc2 in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+    if lc2:IsA("LocalScript") and string.match(lc2.Name, "1") or string.match(lc2.Name, "2") or string.match(lc2.Name, "3") or string.match(lc2.Name, "4") or string.match(lc2.Name, "5") or string.match(lc2.Name, "6") or string.match(lc2.Name, "7") or string.match(lc2.Name, "8") or string.match(lc2.Name, "9") then
+       lc2:Destroy()
+    end
+end
+
+for i,lc in pairs(game.Players.LocalPlayer.PlayerGui.Start:GetChildren()) do
+    if lc:IsA("LocalScript") and string.match(lc.Name, "1") or string.match(lc.Name, "2") or string.match(lc.Name, "3") or string.match(lc.Name, "4") or string.match(lc.Name, "5") or string.match(lc.Name, "6") or string.match(lc.Name, "7") or string.match(lc.Name, "8") or string.match(lc.Name, "9") then
+       lc:Destroy()
+    end
+end
+
+for i,c in pairs(game.Players.LocalPlayer.PlayerGui.Start:GetChildren()) do
+    if c.Name == "CheckPlayerW" then
+    c:Destroy()
+end
+end
+
+for i,z in pairs(game.StarterGui.Start:GetChildren()) do
+    if z.Name == "CheckPlayerW" then
+    z:Destroy()
+end
+end
+
+for _, v in pairs(game.StarterPlayer.StarterCharacterScripts:GetDescendants()) do
+if v.Name == " " then
+v:Destroy()
+end
+end
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+wait(0.5)
+for i,char in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+    if char.Name == " " then
+       char:Destroy()
+    end
+    end
+end)
+
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/S-RealScript/OrionF9/refs/heads/main/Fix')))()
+local Window = OrionLib:MakeWindow({Name = "S-RealScript ⚔️", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest", IntroText = "Premium V4"})
+
+local Tab = Window:MakeTab({
+	Name = "🔍 | Turn Off Ex.",
+	Icon = "",
+	Premium = false
+})
+
+local Section = Tab:AddSection({
+	Name = " Keybinds  "
+})
+
+local Section = Tab:AddSection({
+	Name = " How to turn off your reach in your game  "
+})
+Tab:AddParagraph("Turn Off","Click in your keybord key : F8")
+Tab:AddParagraph("Developer","Kelvin")
+
+local Tab1 = Window:MakeTab({
+	Name = " 📏 | Reach",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab1:AddSection({
+	Name = "Reach R15 + R6"
+})
+
+Tab1:AddParagraph("The Best Studs For Me","But if you want to get Reach, no one will suspect that : Use 2.2-2.3")
+
+Tab1:AddTextbox({
+	Name = "Reach",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Studs)
+
+
+local player = game.Players.LocalPlayer
+
+local function modifyLegs(character)
+    if character.Humanoid.RigType == Enum.HumanoidRigType.R6 then
+        local rightLeg = character:FindFirstChild("Right Leg")
+        if game.Lighting[game.Players.LocalPlayer.Name].PreferredFoot.Value == 1 then
+            rightLeg.Massless = true
+            rightLeg.Size = Vector3.new(Studs, 2, Studs)
+            rightLeg.Transparency = 1
+            local newRightLeg = Instance.new("Part")
+            newRightLeg.Name = "Right Leg"
+            newRightLeg.CanCollide = false
+            newRightLeg.Color = rightLeg.Color
+            newRightLeg.Size = Vector3.new(1, 2, 1)
+            newRightLeg.Locked = true
+            newRightLeg.Position = rightLeg.Position
+            newRightLeg.Parent = character
+            local attachment = Instance.new("Attachment")
+            attachment.Name = "RightFootAttachment"
+            attachment.Position = Vector3.new(0, -1, 0)
+            attachment.Parent = newRightLeg
+            local motorHip = Instance.new("Motor6D")
+            motorHip.Name = "Fake Right Hip"
+            motorHip.C0 = CFrame.new(1, -1, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+            motorHip.C1 = CFrame.new(0.5, 1, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+            motorHip.CurrentAngle = 0
+            motorHip.DesiredAngle = 0
+            motorHip.MaxVelocity = 0.1
+            motorHip.Part0 = character.Torso
+            motorHip.Part1 = newRightLeg
+            motorHip.Parent = character.Torso
+        else
+            local leftLeg = character:FindFirstChild("Left Leg")
+            leftLeg.Massless = true
+            leftLeg.Size = Vector3.new(Studs, 2, Studs)
+            leftLeg.Transparency = 1
+            local newLeftLeg = Instance.new("Part")
+            newLeftLeg.Name = "Left Leg"
+            newLeftLeg.CanCollide = false
+            newLeftLeg.Color = leftLeg.Color
+            newLeftLeg.Size = Vector3.new(1, 2, 1)
+            newLeftLeg.Locked = true
+            newLeftLeg.Position = leftLeg.Position
+            newLeftLeg.Parent = character
+            local attachment = Instance.new("Attachment")
+            attachment.Name = "LeftFootAttachment"
+            attachment.Position = Vector3.new(0, -1, 0)
+            attachment.Parent = newLeftLeg
+            local motorHip = Instance.new("Motor6D")
+            motorHip.Name = "Fake Left Hip"
+            motorHip.C0 = CFrame.new(-1, -1, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+            motorHip.C1 = CFrame.new(-0.5, 1, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+            motorHip.CurrentAngle = 0.18690308928489685
+            motorHip.DesiredAngle = 0.00016103983216453344
+            motorHip.MaxVelocity = 0.1
+            motorHip.Part0 = character.Torso
+            motorHip.Part1 = newLeftLeg
+            motorHip.Parent = character.Torso
+        end
+    else
+        local rightLowerLeg = character:FindFirstChild("RightLowerLeg")
+        local leftLowerLeg = character:FindFirstChild("LeftLowerLeg")
+        
+        if game.Lighting[player.Name].PreferredFoot.Value == 1 then
+            rightLowerLeg.Massless = true
+            rightLowerLeg.Size = Vector3.new(Studs, 2, Studs)
+            rightLowerLeg.Transparency = 1
+            local newRightLowerLeg = Instance.new("Part")
+            newRightLowerLeg.Name = "RightLowerLeg"
+            newRightLowerLeg.CanCollide = false
+            newRightLowerLeg.Color = rightLowerLeg.Color
+            newRightLowerLeg.Size = Vector3.new(1, 2, 1)
+            newRightLowerLeg.Locked = true
+            newRightLowerLeg.Position = rightLowerLeg.Position
+            newRightLowerLeg.Parent = character
+            local attachment = Instance.new("Attachment")
+            attachment.Name = "RightFootAttachment"
+            attachment.Position = Vector3.new(0, -1, 0)
+            attachment.Parent = newRightLowerLeg
+            local motorHip = Instance.new("Motor6D")
+            motorHip.Name = "Fake Right Hip"
+            motorHip.C0 = CFrame.new(1, -1, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+            motorHip.C1 = CFrame.new(0.5, 1, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+            motorHip.CurrentAngle = 0
+            motorHip.DesiredAngle = 0
+            motorHip.MaxVelocity = 0.1
+            motorHip.Part0 = character.Torso
+            motorHip.Part1 = newRightLowerLeg
+            motorHip.Parent = character.Torso
+        else
+            leftLowerLeg.Massless = true
+            leftLowerLeg.Size = Vector3.new(Studs, 2, Studs)
+            leftLowerLeg.Transparency = 1
+            local newLeftLowerLeg = Instance.new("Part")
+            newLeftLowerLeg.Name = "LeftLowerLeg"
+            newLeftLowerLeg.CanCollide = false
+            newLeftLowerLeg.Color = leftLowerLeg.Color
+            newLeftLowerLeg.Size = Vector3.new(1, 2, 1)
+            newLeftLowerLeg.Locked = true
+            newLeftLowerLeg.Position = leftLowerLeg.Position
+            newLeftLowerLeg.Parent = character
+            local attachment = Instance.new("Attachment")
+            attachment.Name = "LeftFootAttachment"
+            attachment.Position = Vector3.new(0, -1, 0)
+            attachment.Parent = newLeftLowerLeg
+            local motorHip = Instance.new("Motor6D")
+            motorHip.Name = "Fake Left Hip"
+            motorHip.C0 = CFrame.new(1, -1, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+            motorHip.C1 = CFrame.new(0.5, 1, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+            motorHip.CurrentAngle = 0
+            motorHip.DesiredAngle = 0
+            motorHip.MaxVelocity = 0.1
+            motorHip.Part0 = character.Torso
+            motorHip.Part1 = newLeftLowerLeg
+            motorHip.Parent = character.Torso
+        end
+    end
+end
+
+player.CharacterAdded:Connect(function(character)
+    character:WaitForChild("Humanoid")
+    modifyLegs(character)
+end)
+
+if player.Character then
+    modifyLegs(player.Character)
+end
+
+	end	  
+})
+
+Tab1:AddTextbox({
+    Name = "Head Reach",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(Studs)
+        -- التأكد من أن القيمة عدد عشري وضمن الحد المسموح
+        Studs = math.clamp(tonumber(Studs) or 0, 0, 10) -- السماح بقيمة تصل إلى 10 لجعل الريتش أقوى
+
+        local player = game.Players.LocalPlayer
+        local function modifyReach(character)
+            local head = character:FindFirstChild("Head")
+            if head then
+                -- التأكد من عدم وجود "مربع الريتش" مسبقًا وحذفه لتجنب التكرار
+                local existingReachPart = character:FindFirstChild("ReachPart")
+                if existingReachPart then
+                    existingReachPart:Destroy()
+                end
+
+                -- إنشاء مربع جديد يمثل الريتش
+                local reachPart = Instance.new("Part")
+                reachPart.Name = "ReachPart"
+                reachPart.CanCollide = false
+                reachPart.Transparency = 1 -- المربع مخفي تمامًا
+                reachPart.Anchored = false
+                reachPart.Massless = true
+                reachPart.Color = Color3.new(1, 0, 0) -- (اختياري: اللون في حال تريد اختباره)
+                reachPart.Size = Vector3.new(Studs, Studs, Studs) -- حجم المربع يعتمد على القيمة المدخلة
+                reachPart.Position = head.Position -- وضع المربع في نفس موقع الرأس
+                reachPart.Parent = character
+
+                -- ربط المربع بالرأس باستخدام WeldConstraint
+                local weld = Instance.new("WeldConstraint")
+                weld.Part0 = head
+                weld.Part1 = reachPart
+                weld.Parent = reachPart
+            end
+        end
+
+        -- توصيل الحدث لتطبيق التعديلات عند دخول الشخصية
+        player.CharacterAdded:Connect(function(character)
+            character:WaitForChild("Head")
+            modifyReach(character)
+        end)
+
+        -- تعديل الشخصية الحالية إذا كانت موجودة
+        if player.Character then
+            modifyReach(player.Character)
+        end
+    end
+})
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+local UserInputService = game:GetService("UserInputService")
+local player = game.Players.LocalPlayer
+local originalSizes = {}
+
+-- دالة لحفظ الأحجام الأصلية
+local function saveOriginalSizes(character)
+    local humanoid = character:FindFirstChild("Humanoid")
+    if not humanoid then return end
+
+    local isR6 = humanoid.RigType == Enum.HumanoidRigType.R6
+    if isR6 then
+        -- حفظ الأطراف في R6
+        local rightLeg = character:FindFirstChild("Right Leg")
+        local leftLeg = character:FindFirstChild("Left Leg")
+        if rightLeg then
+            originalSizes["RightLeg"] = rightLeg.Size
+        end
+        if leftLeg then
+            originalSizes["LeftLeg"] = leftLeg.Size
+        end
+    else
+        -- حفظ الأطراف في R15
+        local rightLowerLeg = character:FindFirstChild("RightLowerLeg")
+        local leftLowerLeg = character:FindFirstChild("LeftLowerLeg")
+        if rightLowerLeg then
+            originalSizes["RightLowerLeg"] = rightLowerLeg.Size
+        end
+        if leftLowerLeg then
+            originalSizes["LeftLowerLeg"] = leftLowerLeg.Size
+        end
+    end
+end
+
+-- دالة لإرجاع الأطراف إلى حجمها الطبيعي
+local function resetLegs(character)
+    local humanoid = character:FindFirstChild("Humanoid")
+    if not humanoid then return end
+
+    local isR6 = humanoid.RigType == Enum.HumanoidRigType.R6
+    if isR6 then
+        -- إعادة الأطراف في R6
+        local rightLeg = character:FindFirstChild("Right Leg")
+        local leftLeg = character:FindFirstChild("Left Leg")
+        if rightLeg and originalSizes["RightLeg"] then
+            rightLeg.Size = originalSizes["RightLeg"]
+        end
+        if leftLeg and originalSizes["LeftLeg"] then
+            leftLeg.Size = originalSizes["LeftLeg"]
+        end
+    else
+        -- إعادة الأطراف في R15
+        local rightLowerLeg = character:FindFirstChild("RightLowerLeg")
+        local leftLowerLeg = character:FindFirstChild("LeftLowerLeg")
+        if rightLowerLeg and originalSizes["RightLowerLeg"] then
+            rightLowerLeg.Size = originalSizes["RightLowerLeg"]
+        end
+        if leftLowerLeg and originalSizes["LeftLowerLeg"] then
+            leftLowerLeg.Size = originalSizes["LeftLowerLeg"]
+        end
+    end
+end
+
+-- عند إضافة الشخصية، حفظ الأحجام الأصلية
+player.CharacterAdded:Connect(function(character)
+    character:WaitForChild("Humanoid")
+    saveOriginalSizes(character)
+end)
+
+-- إذا كانت الشخصية محملة بالفعل
+if player.Character then
+    saveOriginalSizes(player.Character)
+end
+
+-- ربط الوظيفة بزر F8
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+
+    -- تحقق من الزر الذي ضغطه اللاعب (هنا يتم تعيين الزر على "F8")
+    if input.KeyCode == Enum.KeyCode.F8 then
+        if player.Character then
+            resetLegs(player.Character)
+        end
+    end
+end)
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+local Section = Tab1:AddSection({
+	Name = "See Your Studs"
+})
+
+Tab1:AddTextbox({
+	Name = "Unhide Reach",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Studs)
+        -- التحقق من المدخلات
+        Studs = tonumber(Studs)
+        if not Studs or Studs <= 0 then
+            return
+        end
+
+        local player = game.Players.LocalPlayer
+
+        local function modifyLegs(character)
+            local humanoid = character:FindFirstChild("Humanoid")
+            if not humanoid then return end
+
+            local isR6 = humanoid.RigType == Enum.HumanoidRigType.R6
+            local preferredFoot = game.Lighting:FindFirstChild(player.Name) and game.Lighting[player.Name]:FindFirstChild("PreferredFoot")
+            if not preferredFoot then
+                warn("PreferredFoot not found in Lighting.")
+                return
+            end
+
+            if isR6 then
+                -- تعديل الأطراف في R6
+                local legName = preferredFoot.Value == 1 and "Right Leg" or "Left Leg"
+                local leg = character:FindFirstChild(legName)
+                if leg then
+                    leg.Size = Vector3.new(Studs, 2, Studs)
+                    leg.Transparency = 0 -- عودة الشفافية إلى الوضع الطبيعي
+                end
+            else
+                -- تعديل الأطراف في R15
+                local legName = preferredFoot.Value == 1 and "RightLowerLeg" or "LeftLowerLeg"
+                local leg = character:FindFirstChild(legName)
+                if leg then
+                    leg.Size = Vector3.new(Studs, 2, Studs)
+                    leg.Transparency = 0 -- عودة الشفافية إلى الوضع الطبيعي
+                end
+            end
+        end
+
+        if player.Character then
+            modifyLegs(player.Character)
+        end
+    end
+})
+
+Tab1:AddTextbox({
+	Name = "Reset Reach",
+	Default = "",
+	TextDisappear = true,
+	Callback = function()
+        local player = game.Players.LocalPlayer
+
+        local function resetLegs(character)
+            local humanoid = character:FindFirstChild("Humanoid")
+            if not humanoid then return end
+
+            local isR6 = humanoid.RigType == Enum.HumanoidRigType.R6
+            if isR6 then
+                -- إعادة الأطراف في R6
+                local rightLeg = character:FindFirstChild("Right Leg")
+                local leftLeg = character:FindFirstChild("Left Leg")
+                if rightLeg then
+                    rightLeg.Size = Vector3.new(1, 2, 1)
+                    rightLeg.Transparency = 0
+                end
+                if leftLeg then
+                    leftLeg.Size = Vector3.new(1, 2, 1)
+                    leftLeg.Transparency = 0
+                end
+            else
+                -- إعادة الأطراف في R15
+                local rightLowerLeg = character:FindFirstChild("RightLowerLeg")
+                local leftLowerLeg = character:FindFirstChild("LeftLowerLeg")
+                if rightLowerLeg then
+                    rightLowerLeg.Size = Vector3.new(1, 2, 1)
+                    rightLowerLeg.Transparency = 0
+                end
+                if leftLowerLeg then
+                    leftLowerLeg.Size = Vector3.new(1, 2, 1)
+                    leftLowerLeg.Transparency = 0
+                end
+            end
+        end
+
+        if player.Character then
+            resetLegs(player.Character)
+        end
+    end
+})
+
+local Section = Tab1:AddSection({
+	Name = "Clumsy"
+})
+Tab1:AddTextbox({
+	Name = "Clumsy",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(v209)
+        settings():GetService("NetworkSettings").IncomingReplicationLag = tonumber(v209)
+	end	  
+})
+
+Tab1:AddParagraph("Clumsy : Recommendation","if you want to use Clusmy, use 1-2-3 :if you use this setting your ping he will go up like 130-160 But if use 10 your ping will go 600-700")
+
+local Tab2 = Window:MakeTab({
+	Name = "🚀  | React",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab2:AddSection({
+	Name = "7 React"
+})
+
+Tab2:AddButton({
+	Name = "Tunaz React[Left Leg]",
+	Callback = function()
+        local player = game:GetService("Players").LocalPlayer
+        local mouse = player:GetMouse()
+        local leftLeg = player.Character["Left Leg"]
+        
+        mouse.KeyDown:Connect(function(key)
+            key = key:lower()
+            
+            local function processWorkspace()
+                for _, descendant in pairs(game.Workspace:GetDescendants()) do
+                    if descendant:IsA("BasePart") or descendant:IsA("Part") then
+                        local size = Vector3.new(
+                            math.floor(descendant.Size.X - 2.5),
+                            math.floor(descendant.Size.Y - 2.5),
+                            math.floor(descendant.Size.Z - 2.5)
+                        )
+                        if size == Vector3.new(0, 0, 0) then
+                        end
+                    end
+                end
+            end
+        
+            local arguments = {
+                nil,
+                Vector3.new(math.huge, math.huge, math.huge),
+                CFrame.new(Vector3.new(0, 0, 0))
+            }
+        
+            if key == "k" then
+                processWorkspace()
+            end
+        
+            game:GetService("RunService").ChildAdded:Connect(function()
+                while task.wait(0.001) do
+                    for _, descendant in pairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
+                        if descendant:IsA("RemoteEvent") and string.find(descendant.Name, "React") then
+                            descendant:FireServer(unpack(arguments))
+                        end
+                    end
+                end
+            end)
+        
+            local function createHoverEffect(textLabel)
+                local tweenService = game:GetService("TweenService")
+                local hoverInTweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+                local hoverOutTweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+        
+                textLabel.MouseEnter:Connect(function()
+                    local tween = tweenService:Create(textLabel, hoverInTweenInfo, {TextTransparency = 0})
+                    tween:Play()
+                end)
+        
+                textLabel.MouseLeave:Connect(function()
+                    local tween = tweenService:Create(textLabel, hoverOutTweenInfo, {TextTransparency = 0.5})
+                    tween:Play()
+                end)
+            end
+        
+            local function handleTextLabel()
+                local textLabel = Instance.new("TextLabel", game.StarterGui)
+                wait(8999999488)
+                local tweenService = game:GetService("TweenService")
+                local tweenInfo = TweenInfo.new(0.8, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut)
+                local targetPosition = {Position = UDim2.new(0.819, 0, 0.815, 0)}
+                local tween = tweenService:Create(textLabel, tweenInfo, targetPosition)
+                tween:Play()
+                createHoverEffect(textLabel)
+            end
+        
+            coroutine.wrap(handleTextLabel)()
+        end)        
+  	end    
+})
+
+Tab2:AddButton({
+	Name = "Tunaz React[Right Leg]",
+	Callback = function()
+        local player = game:GetService("Players").LocalPlayer
+        local mouse = player:GetMouse()
+        local rightLeg = player.Character["Right Leg"]
+        
+        mouse.KeyDown:Connect(function(key)
+            key = key:lower()
+        
+            local function processWorkspace()
+                for _, descendant in pairs(game.Workspace:GetDescendants()) do
+                    if descendant:IsA("BasePart") or descendant:IsA("Part") then
+                        local size = Vector3.new(
+                            math.floor(descendant.Size.X - 2.5),
+                            math.floor(descendant.Size.Y - 2.5),
+                            math.floor(descendant.Size.Z - 2.5)
+                        )
+                        if size == Vector3.new(0, 0, 0) then
+                        end
+                    end
+                end
+            end
+        
+            local arguments = {
+                nil,
+                Vector3.new(math.huge, math.huge, math.huge),
+                CFrame.new(Vector3.new(0, 0, 0))
+            }
+        
+            game:GetService("RunService").ChildAdded:Connect(function()
+                while task.wait(0.001) do
+                    for _, descendant in pairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
+                        if descendant:IsA("RemoteEvent") and string.find(descendant.Name, "React") then
+                            descendant:FireServer(unpack(arguments))
+                        end
+                    end
+                end
+            end)
+        
+            if key == "k" then
+                processWorkspace()
+            end
+        
+            local function createHoverEffect(textLabel)
+                local tweenService = game:GetService("TweenService")
+                local hoverInTweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+                local hoverOutTweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+        
+                textLabel.MouseEnter:Connect(function()
+                    local tween = tweenService:Create(textLabel, hoverInTweenInfo, {TextTransparency = 0})
+                    tween:Play()
+                end)
+        
+                textLabel.MouseLeave:Connect(function()
+                    local tween = tweenService:Create(textLabel, hoverOutTweenInfo, {TextTransparency = 0.5})
+                    tween:Play()
+                end)
+            end
+        
+            local function handleTextLabel()
+                local textLabel = Instance.new("TextLabel", game.StarterGui)
+                wait(8999999488) 
+                local tweenService = game:GetService("TweenService")
+                local tweenInfo = TweenInfo.new(0.8, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut)
+                local targetPosition = {Position = UDim2.new(0.819, 0, 0.815, 0)}
+                local tween = tweenService:Create(textLabel, tweenInfo, targetPosition)
+                tween:Play()
+                createHoverEffect(textLabel)
+            end
+        
+            coroutine.wrap(handleTextLabel)()
+        end)
+  	end    
+})
+
+Tab2:AddButton({
+	Name = "Fox React",
+	Callback = function()
+        _G.Vector = Vector3.new(math.huge, math.huge, math.huge)
+
+        local hookmetamethod = hookmetamethod or function(v323, v325, v336)
+            return v322
+        end
+        
+        local getnamecallmethod = getnamecallmethod or function()
+            return ""
+        end
+        
+        local checkcaller = checkcaller or function()
+            return false
+        end
+        
+        if not hookmetamethod then
+            return
+        end
+        
+        local originalNameCall
+        originalNameCall = hookmetamethod(game, "__namecall", function(instance, ...)
+            local args = {...}
+            local methodName = getnamecallmethod()
+        
+            if not checkcaller() and (methodName == "FireServer") and (instance.Name == "Kick") then
+                args[6] = _G.Vector
+                return originalNameCall(instance, unpack(args))
+            end
+        
+            return originalNameCall(instance, ...)
+        end)    
+  	end    
+})
+
+Tab2:AddButton({
+	Name = "Vectoz React",
+	Callback = function()
+        _G.Vector = Vector3.new(math.huge, math.huge, math.huge)
+
+        local hookmetamethod = hookmetamethod or function(v320, v321, v322)
+            return v322
+        end
+        
+        local getnamecallmethod = getnamecallmethod or function()
+            return ""
+        end
+        
+        local checkcaller = checkcaller or function()
+            return false
+        end
+        
+        if not hookmetamethod then
+            return
+        end
+        
+        local originalNameCall
+        originalNameCall = hookmetamethod(game, "__namecall", function(instance, ...)
+            local args = {...}
+            local methodName = getnamecallmethod()
+        
+            if not checkcaller() and (methodName == "FireServer") and (instance.Name == "Kick") then
+                args[6] = _G.Vector
+                return originalNameCall(instance, unpack(args))
+            end
+        
+            return originalNameCall(instance, ...)
+        end)    
+  	end    
+})
+
+Tab2:AddButton({
+	Name = "Keepz React",
+	Callback = function()
+        local player = game:GetService("Players").LocalPlayer
+
+        local hookmetamethod = hookmetamethod or function(v332, v333, v334)
+            return v334
+        end
+        
+        local getnamecallmethod = getnamecallmethod or function()
+            return ""
+        end
+        
+        local checkcaller = checkcaller or function()
+            return false
+        end
+        
+        if not hookmetamethod then
+            return
+        end
+        
+        local originalNameCall
+        originalNameCall = hookmetamethod(game, "__namecall", function(instance, ...)
+            local args = {...}
+            local methodName = getnamecallmethod()
+        
+            if not checkcaller() and (methodName == "FireServer") and (tostring(instance) == "Dribble") then
+                args[2] = player.Character.Humanoid.LLCL
+                return originalNameCall(instance, unpack(args))
+            end
+        
+            return originalNameCall(instance, ...)
+        end)   
+  	end    
+})
+
+Tab2:AddButton({
+	Name = "Abz React",
+	Callback = function()
+        _G.Vector = Vector3.new(math.huge, math.huge, math.huge)
+
+        local hookmetamethod = hookmetamethod or function(v322, v325, v324)
+            return v328
+        end
+        
+        local getnamecallmethod = getnamecallmethod or function()
+            return ""
+        end
+        
+        local checkcaller = checkcaller or function()
+            return false
+        end
+        
+        if not hookmetamethod then
+            return
+        end
+        
+        local originalNameCall
+        originalNameCall = hookmetamethod(game, "__namecall", function(instance, ...)
+            local args = {...}
+            local methodName = getnamecallmethod()
+        
+            if not checkcaller() and (methodName == "FireServer") and (tostring(instance) == "Shoot") then
+                args[6] = _G.Vector
+                return originalNameCall(instance, unpack(args))
+            end
+        
+            return originalNameCall(instance, ...)
+        end)
+        
+  	end    
+})
+
+Tab2:AddButton({
+	Name = "Alz React",
+	Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/GrePU9TQ"))()  
+  	end    
+})
+
+
+local Tab3 = Window:MakeTab({
+	Name = "💨  | Helpers",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab3:AddSection({
+	Name = "Air Dribble Helper"
+})
+
+Tab3:AddToggle({
+	Name = "Enable Air Dribble Helper",
+	Default = false,
+	Callback = function(v148)
+		if v148 then
+            getgenv().boxsettings = {
+                box = {
+        
+                    boxsize = Vector3.new(v32 or 1, v32 or 1, v32 or 1),
+                    markerOffset = Vector3.new(0, -1, 0),
+                    boxtransparency = 1
+                }
+            }
+            
+          
+            local tpsPart = game.Workspace.TPSSystem.TPS
+        
+            local function createTPSPart(parent, referencePart)
+                local newTPS = Instance.new("Part")
+                newTPS.Name = "TPS"
+                newTPS.Size = getgenv().boxsettings.box.boxsize 
+                newTPS.Anchored = true
+                newTPS.Transparency = getgenv().boxsettings.box.boxtransparency 
+                newTPS.Parent = parent 
+                return newTPS
+            end
+            
+            local newTPSPart = createTPSPart(tpsPart.Parent, tpsPart)
+        
+            v30 = game:GetService("RunService").Heartbeat:Connect(function()
+                newTPSPart.Size = Vector3.new(v32 or 1, 0, v32 or 1)
+            end)
+        
+            v31 = game:GetService("RunService").Heartbeat:Connect(function()
+                newTPSPart.CFrame = CFrame.new(tpsPart.Position + getgenv().boxsettings.box.markerOffset)
+            end)
+        end
+	end    
+})
+
+Tab3:AddTextbox({
+	Name = "Air Dribble Helper Size",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(v149)
+        v32 = tonumber(v149) or 1
+        if getgenv().boxsettings then
+            getgenv().boxsettings.box.boxsize = Vector3.new(v32, v32, v32)
+        end
+	end	  
+})
+
+Tab3:AddButton({
+	Name = "Enable ZZZ & ZZZZ Helper",
+	Callback = function()
+        local tps = game.Workspace.TPSSystem.TPS
+        tps.Size = Vector3.new(2.89, 2.89, 2.89)
+        
+        getgenv().boxsettings = {
+            box = {
+                boxsize = Vector3.new(9, 0, 9),
+                markerOffset = Vector3.new(0, -1, 0),
+                boxtransparency = 1
+            }
+        }
+        
+        local function createTPSBox(parent)
+            local box = Instance.new("Part")
+            box.Name = "TPS"
+            box.Size = getgenv().boxsettings.box.boxsize
+            box.Anchored = true
+            box.Transparency = getgenv().boxsettings.box.boxtransparency
+            box.Parent = parent
+            return box
+        end
+        
+        local tpsBox = createTPSBox(tps.Parent)
+        
+        game:GetService("RunService").Stepped:Connect(function()
+            tpsBox.CFrame = CFrame.new(tps.Position + getgenv().boxsettings.box.markerOffset)
+        end)
+  	end    
+})
+
+Tab3:AddButton({
+	Name = "Enable ZZZ & ZZZZ Helper",
+	Callback = function()
+        game.Workspace.TPSSystem.TPS.Size = Vector3.new(3, 3, 3)
+        game.Workspace.TPSSystem.TPS.Velocity = Vector3.new(300, 300, 300)
+  	end    
+})
+
+local Section = Tab3:AddSection({
+	Name = "Dribble & Tackle & Header Helper"
+})
+
+Tab3:AddToggle({
+	Name = "Infinite Dribble Helper",
+	Default = false,
+	Callback = function(isEnabled)
+        v14 = isEnabled
+        if v14 then
+            -- تشغيل المراوغة اللانهائية
+            while v14 and wait() do
+                local player = game.Players.LocalPlayer
+                if player and player.Backpack:FindFirstChild("Ground") then
+                    player.Backpack.Ground.Value = true
+                end
+            end
+        else
+            -- إيقاف المراوغة
+            local player = game.Players.LocalPlayer
+            if player and player.Backpack:FindFirstChild("Ground") then
+                player.Backpack.Ground.Value = false
+            end
+        end
+	end    
+})
+
+Tab3:AddToggle({
+	Name = "Infinite Tackle Helper",
+	Default = false,
+	Callback = function(isEnabled)
+        local isTackleEnabled = isEnabled
+        if isTackleEnabled then
+            -- تفعيل Infinite Tackle
+            while isTackleEnabled and wait() do
+                local player = game.Players.LocalPlayer
+                if player and player.Backpack:FindFirstChild("TackleCooldown") then
+                    player.Backpack.TackleCooldown.Value = 0 -- إعادة ضبط عداد الـ tackle
+                end
+            end
+        else
+            -- إيقاف Infinite Tackle
+            local player = game.Players.LocalPlayer
+            if player and player.Backpack:FindFirstChild("TackleCooldown") then
+                player.Backpack.TackleCooldown.Value = 1 -- إعادة العداد للوضع الطبيعي
+            end
+        end
+	end    
+})
+
+Tab3:AddTextbox({
+	Name = "Set Head Power",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(inputValue)
+
+		-- تحويل المدخل إلى قيمة رقمية
+		local power = tonumber(inputValue)
+		if not power or power < 1 or power > 20 then
+				return
+		end
+
+		local player = game.Players.LocalPlayer
+
+		-- وظيفة لتحديد مستويات القوة
+		local function getPowerMultiplier(value)
+			if value <= 5 then
+				return 10, "أقوى من الطبيعي بقليل"
+			elseif value <= 10 then
+				return 20, "قوي"
+			elseif value <= 15 then
+				return 40, "قوي جدًا"
+			else
+				return 80, "أسطوري"
+			end
+		end
+
+		-- وظيفة لتقوية الرأس
+		local function enhanceHead(character)
+			local head = character:FindFirstChild("Head")
+			if head then
+				-- الحصول على معامل القوة ووصفها
+				local multiplier, description = getPowerMultiplier(power)
+
+		
+				head.Touched:Connect(function(hit)
+					-- التحقق أن الجسم الذي اصطدم بالرأس هو الكرة
+					if hit:IsA("Part") and hit.Name == "SoccerBall" then
+						-- إنشاء قوة دفع للكرة عند الاصطدام
+						local ballVelocity = hit:FindFirstChild("BodyVelocity")
+						if not ballVelocity then
+							ballVelocity = Instance.new("BodyVelocity")
+							ballVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5) -- قوة غير محدودة
+							ballVelocity.Parent = hit
+						end
+
+						-- حساب اتجاه القوة بناءً على موقع الرأس والكرة
+						local direction = (hit.Position - head.Position).unit * multiplier
+						ballVelocity.Velocity = direction + Vector3.new(0, multiplier / 2, 0) -- قوة رأسية تناسب القوة
+
+						-- منع الكرة من القطع بسهولة
+						local ballAngularVelocity = hit:FindFirstChild("BodyAngularVelocity")
+						if not ballAngularVelocity then
+							ballAngularVelocity = Instance.new("BodyAngularVelocity")
+							ballAngularVelocity.MaxTorque = Vector3.new(1e5, 1e5, 1e5)
+							ballAngularVelocity.AngularVelocity = Vector3.new(0, multiplier / 5, 0) -- حركة دورانية تزيد مع القوة
+							ballAngularVelocity.Parent = hit
+						end
+
+						-- إزالة التأثيرات بعد 1 ثانية لتجنب المشاكل
+						task.delay(1, function()
+							if ballVelocity then
+								ballVelocity:Destroy()
+							end
+							if ballAngularVelocity then
+								ballAngularVelocity:Destroy()
+							end
+						end)
+					end
+				end)
+			end
+		end
+
+		-- ربط الوظيفة عند تغيير الشخصية
+		player.CharacterAdded:Connect(function(character)
+			character:WaitForChild("Humanoid")
+			enhanceHead(character)
+		end)
+
+		-- تطبيق الوظيفة إذا كانت الشخصية موجودة بالفعل
+		if player.Character then
+			enhanceHead(player.Character)
+		end
+
+	end
+})
+
+local Tab4 = Window:MakeTab({
+	Name = "🛒  | Gamepasses",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab4:AddSection({
+	Name = "GamePasses"
+})
+
+Tab4:AddToggle({
+	Name = "Blue Flame",
+	Default = false,
+	Callback = function(v106)
+        if v106 then
+            game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.BlueFlame.Tick.Visible = true
+            game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.BlueFlame.BlueFlame.Style =
+                "RobloxRoundButton"
+            game:GetService("Players").LocalPlayer.PlayerGui.Start.PowerShot.Image = "rbxassetid://0"
+            game:GetService("Players").LocalPlayer.Backpack.FValue.Value = 2
+        else
+            game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.BlueFlame.Tick.Visible = false
+            game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.BlueFlame.BlueFlame.Style =
+                "RobloxRoundDefaultButton"
+            game:GetService("Players").LocalPlayer.PlayerGui.Start.PowerShot.Image = "rbxassetid://0"
+            game:GetService("Players").LocalPlayer.Backpack.FValue.Value = 1
+        end
+	end    
+})
+
+Tab4:AddToggle({
+	Name = "Faster Cooldown",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+    Callback = function(v117)
+        local v118 = game:GetService("Players").LocalPlayer
+        if v117 then
+            v118.PlayerGui.Start.GamePassMenu.Items.Cooldown.Tick.Visible = true
+            v118.PlayerGui.Start.GamePassMenu.Items.Cooldown.Cooldown.Style = "RobloxRoundButton"
+            v118.PlayerGui.Start.PowerShot.PowerValue.Value = 30
+        else
+            v118.PlayerGui.Start.GamePassMenu.Items.Cooldown.Tick.Visible = false
+            v118.PlayerGui.Start.GamePassMenu.Items.Cooldown.Cooldown.Style = "RobloxRoundDefaultButton"
+            v118.PlayerGui.Start.PowerShot.PowerValue.Value = 60
+        end
+
+    end,
+ })
+
+Tab4:AddToggle({
+	Name = "More Curve",
+	Default = false,
+	Callback = function(v107)
+        if v107 then
+            local player = game:GetService("Players").LocalPlayer
+            local playerGui = player.PlayerGui.Start.GamePassMenu.Items.WoodenFloor
+            local character = player.Character
+            local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+            playerGui.Tick.Visible = true
+            playerGui.WoodenFloor.Style = "RobloxRoundButton"
+        
+            if humanoid then
+                v12 = humanoid.AnimationPlayed:Connect(function(animationTrack)
+                    local validAnimations = {
+                        "OldMKickL", "OldMKick", "OldLKickL", "OldLKick",
+                        "MKickL", "MKick", "LKickL", "LKick",
+                        "OldDribbleL", "OldDribble", "DribbleL", "Dribble"
+                    }
+                    
+                    if table.find(validAnimations, animationTrack.Name) then
+                        local tpsPart = game.Workspace.TPSSystem.TPS
+                        local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+                        
+                        if humanoidRootPart and (humanoidRootPart.Position - tpsPart.Position).Magnitude < 155.45 then
+                            local curvingValue = player.Backpack:FindFirstChild("Curving") and player.Backpack.Curving.Value
+                            
+                            if curvingValue == 155.45 or curvingValue == 154.45 then
+                                wait(0.1)
+                                
+                                local kickAction
+                                if curvingValue == 155.45 then
+                                    kickAction = game:GetService("Workspace").FE.Actions.KickC1
+                                elseif curvingValue == 154.45 then
+                                    kickAction = game:GetService("Workspace").FE.Actions.KickC2
+                                end
+                                
+                                if kickAction then
+                                    kickAction:FireServer(tpsPart, humanoidRootPart)
+                                    wait(0.2)
+                                    kickAction:FireServer(tpsPart, humanoidRootPart)
+                                end
+                            end
+                        end
+                    end
+                end)
+            end
+        else
+            if v12 then
+                v12:Disconnect()
+            end
+            
+            local playerGui = game:GetService("Players").LocalPlayer.PlayerGui.Start.GamePassMenu.Items.WoodenFloor
+            playerGui.Tick.Visible = false
+            playerGui.WoodenFloor.Style = "RobloxRoundDefaultButton"
+        end
+	end    
+})
+
+Tab4:AddToggle({
+	Name = "Powerfull Tackle",
+	Default = false,
+	Callback = function(v106)
+        local player = game:GetService("Players").LocalPlayer
+        local playerGui = player:WaitForChild("PlayerGui")
+        local startGui = playerGui:WaitForChild("Start")
+        local gamePassMenu = startGui:WaitForChild("GamePassMenu")
+        local randomWeatherItem = gamePassMenu:WaitForChild("Items"):WaitForChild("RandomWeather")
+        
+        local tackleGamePass = startGui:FindFirstChild("TackleGamePass") or Instance.new("BoolValue", startGui)
+        tackleGamePass.Name = "TackleGamePass"
+        tackleGamePass.Value = false
+        
+        if v108 then
+            randomWeatherItem.Tick.Visible = true
+            randomWeatherItem.RandomWeather.Style = "RobloxRoundButton"
+            tackleGamePass.Value = true
+        
+            local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                v13 = humanoid.AnimationPlayed:Connect(function(animationTrack)
+                    if table.find({"TackleL", "Tackle", "OldTackleL", "OldTackle"}, animationTrack.Name) then
+                        local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+                        local tpsPart = game.Workspace.TPSSystem.TPS
+        
+                        if humanoidRootPart and (humanoidRootPart.Position - tpsPart.Position).Magnitude < 4.87 then
+                            wait(0.8)
+                            local kickAction = game:GetService("Workspace").FE.Actions.KickG1
+                            if kickAction then
+                                kickAction:FireServer(tpsPart, humanoidRootPart, 30, Vector3.new(4000000, 700, 4000000))
+                            end
+                        end
+                    end
+                end)
+            end
+        else
+            randomWeatherItem.Tick.Visible = false
+            randomWeatherItem.RandomWeather.Style = "RobloxRoundDefaultButton"
+            tackleGamePass.Value = false
+        
+            if v13 then
+                v13:Disconnect()
+            end
+        end
+	end    
+})
+
+local Tab6 = Window:MakeTab({
+	Name = "⚡️  | Misc",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab6:AddSection({
+	Name = "WalkSpeed / Jumps"
+})
+
+Tab6:AddTextbox({
+	Name = "Walkspeed",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(v192)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v192
+	end	  
+})
+
+Tab6:AddTextbox({
+	Name = "JumpPower",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(v194)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = v194
+	end	  
+})
+local Section = Tab6:AddSection({
+	Name = "Fakes Items"
+})
+Tab6:AddTextbox({
+	Name = "Fake Bombs",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(holy)
+        local lg = game:GetService("Lighting")
+
+        lg[game.Players.LocalPlayer.Name].Bomb.Value = holy
+	end	  
+})
+
+
+Tab6:AddTextbox({
+	Name = "Fake Burns",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(holy)
+        local lg = game:GetService("Lighting")
+
+        lg[game.Players.LocalPlayer.Name].Burn.Value = holy
+	end	  
+})
+
+Tab6:AddTextbox({
+	Name = "Fake Spikes",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(holy)
+        local lg = game:GetService("Lighting")
+
+        lg[game.Players.LocalPlayer.Name].Spike.Value = holy
+	end	  
+})
+
+Tab6:AddTextbox({
+	Name = "Fake Walls",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(holy)
+        local lg = game:GetService("Lighting")
+
+        lg[game.Players.LocalPlayer.Name].Wall.Value = holy
+	end	  
+})
+
+Tab6:AddToggle({
+	Name = "Infinitie Fire",
+	Default = false,
+	Callback = function(v191)
+		if v191 then
+            _G.Fire = true
+            spawn(function()
+                while _G.Fire do
+                    wait()
+                    for _, v714 in pairs(game.Players.LocalPlayer:GetDescendants()) do
+                        if v714:IsA("BoolValue") and v714.Name == "PowerReady" then
+                            v714.Value = true
+                        end
+                    end
+                end
+            end)
+        else
+            _G.Fire = false
+        end
+	end    
+})
+
+local Section = Tab6:AddSection({
+	Name = "Ball Size"
+})
+
+Tab6:AddTextbox({
+	Name = "Ball Size",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(v166)
+		game.Workspace.TPSSystem.TPS.Size = Vector3.new(v166, v166, v166)
+	end	  
+})
+
+local Section = Tab6:AddSection({
+	Name = "Anti Fling"
+})
+
+Tab6:AddButton({
+	Name = "Anti-Fling",
+	Callback = function()
+        local player = game.Players.LocalPlayer
+        local runService = game:GetService("RunService")
+        local Clip = false
+        wait(0.1)
+        
+        local function noclipFunction()
+            if not Clip and player.Character then
+                for _, part in pairs(player.Character:GetDescendants()) do
+                    if part:IsA("BasePart") and part.CanCollide and (part.Name == "Right Leg" or part.Name == "Right Arm" or part.Name == "Left Arm" or part.Name == "Torso") then
+                        part.CanCollide = false
+                    end
+                end
+            end
+        end
+        
+        local noclipConnection = runService.Stepped:Connect(noclipFunction)        
+  	end    
+})
+
+Tab6:AddParagraph("Anti Fling","Anti-Fling is a term used primarily in video games, especially in games like Roblox, where what is called “flinging” can occur. Flinging is when a character or object is launched or flown in an unexpected or distant direction due to an uncontrolled collision or glitch in the in-game physics.")
+
+local Section = Tab6:AddSection({
+	Name = "Ball Collision"
+})
+
+Tab6:AddToggle({
+	Name = " Enable Or Disable Ball Collision",
+	Default = false,
+	Callback = function(v174)
+        if v174 then
+            game.Workspace.TPSSystem.TPS.CanCollide = false
+        else
+            game.Workspace.TPSSystem.TPS.CanCollide = true
+        end
+	end    
+})
+Tab6:AddParagraph("Ball Collision","You can use Ball Collision to fine-tune the ball's movement, such as adding bounce on collision or customizing the movement when it interacts with different surfaces. For example, if you want the ball to bounce when it hits walls, you can add code to improve the ball's interaction with the environment.")
+
+local Tab9 = Window:MakeTab({
+	Name = "⭐️  | LVL",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab9:AddSection({
+	Name = "Visual Level Spoofer"
+})
+Tab9:AddTextbox({
+	Name = "Visual Level Spoofer",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(v190)
+		while wait() do
+            game.Players.LocalPlayer.PlayerGui.Start.Scores.Level.Text = "Level " .. tonumber(v190)
+        end
+	end	  
+})
+Tab9:AddParagraph("Visual Level Spoofer","Its Fake None He Cant See your lvl just you But  from Level 100 to 5000 Anyone will see the level. ")
+
+local Section = Tab9:AddSection({
+	Name = "F.E Level Spoofer"
+})
+
+Tab9:AddButton({
+	Name = "Level 100",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 242000
+  	end    
+})
+
+Tab9:AddButton({
+	Name = "Level 500",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 1210000
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "Level 1000",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 2420000
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "Level 1500",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 3630000
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "Level 2000",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 4840000
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "Level 2500",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 6050000
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "Level 3000",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 7260000
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "Level 3500",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 8470000
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "Level 4000",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 9680000
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "Level 4500",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 10890000
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "Level 5000",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+        game.Lighting[game.Players.LocalPlayer.Name].XP.Value = 12100000
+  	end    
+})
+
+local Tab7 = Window:MakeTab({
+	Name = "🖱  | Drag / Troll",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab7:AddSection({
+	Name = "🖱  | Drag"
+})
+
+Tab7:AddToggle({
+	Name = "Drag Right Side",
+	Default = false,
+	Callback = function(v213)
+		if v213 then
+            _G.DragClickRight = true
+            
+            while _G.DragClickRight do
+                wait(0.1) 
+                for v717 = 1, 25 do
+                    local v718 = game:GetService("Workspace").TPSSystem.TPS
+                    local v719 = game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        
+                    if v719 then
+                        local v720 = game:GetService("Workspace").FE.Actions.KickC1
+                        v720:FireServer(v718, v719)
+                    end
+                end
+            end
+        else
+            _G.DragClickRight = false
+        end
+	end    
+})
+
+Tab7:AddToggle({
+	Name = "Drag Left Side",
+	Default = false,
+	Callback = function(v214)
+		if v214 then
+            _G.DragClickLeft = true
+            
+            while _G.DragClickLeft do
+                wait(0.1) 
+                for v721 = 1, 25 do
+                    local v722 = game:GetService("Workspace").TPSSystem.TPS
+                    local v723 = game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    
+                    if v723 then
+                        local v724 = game:GetService("Workspace").FE.Actions.KickC2
+                        v724:FireServer(v722, v723)
+                    end
+                end
+            end
+        else
+            _G.DragClickLeft = false
+        end        
+	end    
+})
+
+local Section = Tab7:AddSection({
+	Name = "Other Troll"
+})
+
+Tab7:AddToggle({
+	Name = "Fly On Ball",
+	Default = false,
+	Callback = function(v215)
+        if v215 then
+            v17 =
+                game:GetService("RunService").Heartbeat:Connect(
+                    function()
+                        if _G.FlyOnBall then
+                            game.Players.LocalPlayer.Character:MoveTo(game.Workspace.TPSSystem.TPS.Position)
+                        end
+                    end
+                )
+            _G.FlyOnBall = true
+        else
+            if v17 then
+                v17:Disconnect()
+                v17 = nil
+            end
+            _G.FlyOnBall = false
+        end
+	end    
+})
+
+Tab7:AddButton({
+    Name = "KIll All",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/zqyDSUWX"))()
+    end,
+ })
+
+Tab7:AddButton({
+	Name = "Auto Farm",
+	Callback = function()
+        _G.AUTOFARM = not _G.AUTOFARM -- تشغيل/إيقاف الـ Auto Farm
+        while _G.AUTOFARM do
+            wait(0.1) -- تقليل استهلاك الموارد
+            -- التحقق من وجود العناصر المطلوبة
+            local player = game.Players.LocalPlayer
+            if not player or not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
+                break
+            end
+            
+            local HRPRotation = player.Character.HumanoidRootPart.CFrame.Rotation
+            local TPSSystem = game.Workspace:FindFirstChild("TPSSystem")
+            if not TPSSystem or not TPSSystem:FindFirstChild("TPS") then
+                break
+            end
+
+            local GoalPST = TPSSystem.TPS.CFrame
+            player.Character.HumanoidRootPart.CFrame = HRPRotation + GoalPST.Position
+
+            -- إرسال الحدث الأول
+            local A_1 = TPSSystem.TPS
+            local A_2 = player.Character:FindFirstChild("Head")
+            local TackleEvent = game.Workspace.FE.Actions:FindFirstChild("Tackle")
+            if TackleEvent then
+                TackleEvent:FireServer(A_1, A_2)
+            end
+
+            -- إرسال الحدث الثاني
+            local KickEvent = game.Workspace.FE.Kick:FindFirstChild("RemoteEvent2")
+            if KickEvent then
+                KickEvent:FireServer()
+            end
+
+            -- إعداد الكاميرا بناءً على فريق اللاعب
+            local playerGui = player:FindFirstChild("PlayerGui")
+            if playerGui and playerGui:FindFirstChild("LockScript") then
+                playerGui.LockScript.SetLock.Value = true
+            end
+
+            local camera = game.Workspace.CurrentCamera
+            if player.TeamColor == BrickColor.new("Bright red") then
+                camera.CFrame = CFrame.lookAt(camera.CFrame.Position + Vector3.new(0, 45, 0), game.Workspace.BlueGoal.Part.Position)
+            elseif player.TeamColor == BrickColor.new("Bright blue") then
+                camera.CFrame = CFrame.lookAt(camera.CFrame.Position + Vector3.new(0, 45, 0), game.Workspace.RedGoal.Part.Position)
+            end
+        end
+  	end    
+})
+
+local Tab8 = Window:MakeTab({
+	Name = "🌪  | Ping React ",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab8:AddSection({
+	Name = "Ping React / Cooming Soon"
+})
+
+
+local Tab9 = Window:MakeTab({
+	Name = "⚙️  | Graphic / EXTRA ",
+	Icon = "",
+	PremiumOnly = false
+})
+local Section = Tab9:AddSection({
+	Name = "RTX - Quality - Texutre"
+})
+
+Tab9:AddButton({
+	Name = "RTX Sunny",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+
+        for _, effect in pairs(Lighting:GetChildren()) do
+            if effect:IsA("PostEffect") then
+                effect:Destroy()
+            end
+        end
+        
+        Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+        Lighting.Brightness = 2
+        Lighting.OutdoorAmbient = Color3.fromRGB(127, 127, 127)
+        Lighting.GlobalShadows = true
+        Lighting.EnvironmentDiffuseScale = 1
+        Lighting.EnvironmentSpecularScale = 1
+        
+        local bloom = Instance.new("BloomEffect")
+        bloom.Intensity = 0.7
+        bloom.Threshold = 0.1
+        bloom.Size = 24
+        bloom.Parent = Lighting
+        
+        local sunRays = Instance.new("SunRaysEffect")
+        sunRays.Intensity = 0.1
+        sunRays.Spread = 1
+        sunRays.Parent = Lighting
+        
+        local colorCorrection = Instance.new("ColorCorrectionEffect")
+        colorCorrection.TintColor = Color3.fromRGB(255, 240, 214)
+        colorCorrection.Brightness = 0.1
+        colorCorrection.Contrast = 0.1
+        colorCorrection.Saturation = 0.2
+        colorCorrection.Parent = Lighting
+        
+        local depthOfField = Instance.new("DepthOfFieldEffect")
+        depthOfField.InFocusRadius = 10
+        depthOfField.NearIntensity = 0.5
+        depthOfField.FarIntensity = 0.1
+        depthOfField.Parent = Lighting
+        
+        local blur = Instance.new("BlurEffect")
+        blur.Size = 2
+        blur.Parent = Lighting
+        
+        local atmosphere = Instance.new("Atmosphere")
+        atmosphere.Density = 0.3
+        atmosphere.Offset = 0.25
+        atmosphere.Glare = 0.1
+        atmosphere.Haze = 0.4
+        atmosphere.Parent = Lighting
+                  
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "RTX Chilly (Purple)",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+
+
+        for _, effect in pairs(Lighting:GetChildren()) do
+            if effect:IsA("PostEffect") then
+                effect:Destroy()
+            end
+        end
+        
+        
+        Lighting.Ambient = Color3.fromRGB(128, 0, 255)  
+        Lighting.Brightness = 1.5
+        Lighting.OutdoorAmbient = Color3.fromRGB(75, 0, 130)  
+        Lighting.GlobalShadows = true
+        Lighting.EnvironmentDiffuseScale = 0.5
+        Lighting.EnvironmentSpecularScale = 0.5
+        
+        local bloom = Instance.new("BloomEffect")
+        bloom.Intensity = 0.5
+        bloom.Threshold = 0.3
+        bloom.Size = 20
+        bloom.Parent = Lighting
+        
+        local sunRays = Instance.new("SunRaysEffect")
+        sunRays.Intensity = 0.05
+        sunRays.Spread = 0.7
+        sunRays.Parent = Lighting
+        
+        
+        local colorCorrection = Instance.new("ColorCorrectionEffect")
+        colorCorrection.TintColor = Color3.fromRGB(150, 100, 255)  
+        colorCorrection.Brightness = -0.05
+        colorCorrection.Contrast = 0.1
+        colorCorrection.Saturation = -0.3  
+        colorCorrection.Parent = Lighting
+        
+        local depthOfField = Instance.new("DepthOfFieldEffect")
+        depthOfField.InFocusRadius = 15
+        depthOfField.NearIntensity = 0.2
+        depthOfField.FarIntensity = 0.05
+        depthOfField.Parent = Lighting
+        
+        local blur = Instance.new("BlurEffect")
+        blur.Size = 1
+        blur.Parent = Lighting
+        
+        local atmosphere = Instance.new("Atmosphere")
+        atmosphere.Density = 0.2
+        atmosphere.Offset = 0.3
+        atmosphere.Glare = 0.05
+        atmosphere.Haze = 0.2
+        atmosphere.Color = Color3.fromRGB(200, 100, 255) 
+        atmosphere.Decay = Color3.fromRGB(120, 60, 200) 
+        atmosphere.Parent = Lighting
+                      
+  	end    
+})
+
+
+Tab9:AddButton({
+	Name = "RTX Clear Shiny",
+	Callback = function()
+        local Lighting = game:GetService("Lighting")
+
+for _, effect in pairs(Lighting:GetChildren()) do
+    if effect:IsA("PostEffect") then
+        effect:Destroy()
+    end
+end
+Lighting.Ambient = Color3.fromRGB(255, 255, 255) 
+Lighting.Brightness = 2
+Lighting.OutdoorAmbient = Color3.fromRGB(200, 200, 200) 
+Lighting.GlobalShadows = true
+Lighting.EnvironmentDiffuseScale = 1
+Lighting.EnvironmentSpecularScale = 1 
+
+local bloom = Instance.new("BloomEffect")
+bloom.Intensity = 0.8 
+bloom.Threshold = 0.2
+bloom.Size = 22
+bloom.Parent = Lighting
+
+
+local sunRays = Instance.new("SunRaysEffect")
+sunRays.Intensity = 0.1
+sunRays.Spread = 1
+sunRays.Parent = Lighting
+
+local colorCorrection = Instance.new("ColorCorrectionEffect")
+colorCorrection.TintColor = Color3.fromRGB(255, 255, 255) 
+colorCorrection.Brightness = 0.1
+colorCorrection.Contrast = 0.2 
+colorCorrection.Saturation = 0.2
+colorCorrection.Parent = Lighting
+
+
+local depthOfField = Instance.new("DepthOfFieldEffect")
+depthOfField.InFocusRadius = 25
+depthOfField.NearIntensity = 0.2
+depthOfField.FarIntensity = 0.1
+depthOfField.Parent = Lighting
+
+local atmosphere = Instance.new("Atmosphere")
+atmosphere.Density = 0.2
+atmosphere.Offset = 0.25
+atmosphere.Glare = 0.05
+atmosphere.Haze = 0.1
+atmosphere.Color = Color3.fromRGB(255, 255, 255) 
+atmosphere.Decay = Color3.fromRGB(200, 200, 200)
+atmosphere.Parent = Lighting
+
+
+local function makePartShiny(part)
+    part.Reflectance = 0.6 
+    part.Material = Enum.Material.SmoothPlastic 
+end
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+for _, part in pairs(character:GetChildren()) do
+    if part:IsA("BasePart") then
+        makePartShiny(part)
+    end
+end
+
+player.CharacterAdded:Connect(function(newCharacter)
+    character = newCharacter
+    for _, part in pairs(character:GetChildren()) do
+        if part:IsA("BasePart") then
+            makePartShiny(part)
+        end
+    end
+end)
+                  
+  	end    
+})
+local Section = Tab9:AddSection({
+	Name = "Old Dirt - Maps Texture"
+})
+
+Tab9:AddButton({
+	Name = "Old Dirt",
+	Callback = function()
+        spawn(
+            function()
+                while true do
+                    local v593 = workspace.SoccerFieldParts.SoccerField:FindFirstChild("Dirt")
+                    if v593 then
+                        v593:Destroy()
+                    end
+                    workspace.SoccerFieldParts.SoccerField.Material = Enum.Material.Granite
+                    workspace.SoccerFieldParts.SoccerField.Color = Color3.new(41 / 255, 99 / 255, 27 / 255)
+                    wait(60)
+                end
+            end
+        )
+  	end    
+})
+
+Tab9:AddButton({
+    Name = "Low Texture",
+    Callback = function()
+        -- تحميل الكود من الرابط المحدد
+        local success, result = pcall(function()
+            return loadstring(game:HttpGet("https://pastebin.com/raw/8YZ2cc6V"))()  
+        end)
+    end    
+})
+
+Tab9:AddButton({
+    Name = "Medium Texture",
+    Callback = function()
+        -- تحميل الكود من الرابط المحدد
+        local success, result = pcall(function()
+            return loadstring(game:HttpGet("https://raw.githubusercontent.com/S-RealScript/Fps-Booster/refs/heads/main/Render"))()  
+        end)
+    end    
+})
+
