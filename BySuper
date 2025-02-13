@@ -171,7 +171,7 @@ for i,char in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
     end
 end)
 
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/jensonhirst/Orion/refs/heads/main/source')))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/SuperAreTheBest1/F9/refs/heads/main/Orion')))()
 local Window = OrionLib:MakeWindow({Name = "S-RealScript ⚔️", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest", IntroText = "Premium V4"})
 
 local Tab = Window:MakeTab({
