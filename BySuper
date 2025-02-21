@@ -80,11 +80,6 @@ local success, errorMessage = pcall(function()
         error("HTTP request method not supported.")
     end
 end)
-
-if not success then
-    warn("Failed to send Webhook request: " .. tostring(errorMessage))
-end
-
 local success, err = pcall(function()
     local function safeDestroy(obj)
         if obj and obj.Destroy then
