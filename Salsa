@@ -85,16 +85,12 @@ for i,char in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
 end)
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/SuperAreTheBest1/F9/refs/heads/main/Orion')))()
-local Window = OrionLib:MakeWindow({Name = "RealSpeed Hub", HidePremium = false, SaveConfig = true, ConfigFolder = "Welcome"})
+local Window = OrionLib:MakeWindow({Name = "RealSpeed Hub", HidePremium = false, SaveConfig = true, ConfigFolder = "SalsaScript"})
 
 local Tab1 = Window:MakeTab({
 	Name = " 📏 | Reach",
 	Icon = "",
 	PremiumOnly = false
-})
-
-local Section = Tab1:AddSection({
-	Name = "Reach R15 + R6"
 })
 
 Tab1:AddTextbox({
